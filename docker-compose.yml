@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  # --- CAPA 3: DATA LAYER (Bases de Datos Independientes) ---
+
+  auth-db:
+    image: postgres:15-alpine
+    container_name: auth-db
+    environment:
+      POSTGRES_USER: user_auth
+      POSTGRES_PASSWORD: password_auth
+      POSTGRES_DB: auth_db
+    ports:
+      - "5433:5432" # Puerto externo 5433
+    volumes:
+      - auth_data:/var/lib/postgresql/data
+
+  catalog-db:
+    image: postgres:15-alpine
+    container_name: catalog-db
+    environment:
+      POSTGRES_USER: user_catalog
+      POSTGRES_PASSWORD: password_catalog
+      POSTGRES_DB: catalog_db
+    ports:
+      - "5434:5432" # Puerto externo 5434
+    volumes:
+      - catalog_data:/var/lib/postgresql/data
+
+  orders-db:
+    image: postgres:15-alpine
+    container_name: orders-db
+    environment:
+      POSTGRES_USER: user_orders
+      POSTGRES_PASSWORD: password_orders
+      POSTGRES_DB: orders_db
+    ports:
+      - "5435:5432" # Puerto externo 5435
+    volumes:
+      - orders_data:/var/lib/postgresql/data
+
+  # --- CAPA 2: MESSAGING LAYER (RabbitMQ) ---
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq-broker
+    ports:
+      - "5672:5672"   # Puerto para el código (AMQP)
+      - "15672:15672" # Panel de control visual
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+
+volumes:
+  auth_data:
+  catalog_data:
+  orders_data:

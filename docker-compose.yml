@@ -55,7 +55,7 @@ services:
 
   # ====================== API GATEWAY (desde GitHub) ======================
   apigateway:
-    image: ghcr.io/samusplay/apigateway:latest
+    image: ghcr.io/samusplay/apigateway:v1.1.0-cors-fix
     container_name: apigateway
     ports:
       - "8080:8080"
